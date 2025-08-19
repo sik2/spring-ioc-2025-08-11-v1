@@ -1,11 +1,31 @@
 package com.ll.framework.ioc;
 
-public class ApplicationContext {
-    public ApplicationContext() {
+import com.ll.domain.testPost.testPost.repository.TestPostRepository;
+import com.ll.domain.testPost.testPost.service.TestFacadePostService;
+import com.ll.domain.testPost.testPost.service.TestPostService;
 
+import java.util.HashMap;
+import java.util.Map;
+
+public class ApplicationContext {
+
+    private final Map<String, Object> beans;
+
+    public ApplicationContext() {
+        beans = new HashMap<>();
+
+        TestPostRepository testPostRepository = new TestPostRepository();
+        TestPostService testPostService = new TestPostService(testPostRepository);
+        TestFacadePostService testFacadePostService = new TestFacadePostService(testPostService, testPostRepository);
+
+        beans.put("testPostRepository", testPostRepository);
+        beans.put("testPostService", testPostService);
+        beans.put("testFacadePostService", testFacadePostService);
     }
 
     public <T> T genBean(String beanName) {
-        return (T) null;
+        return (T) beans.get(beanName);
     }
+
+
 }
