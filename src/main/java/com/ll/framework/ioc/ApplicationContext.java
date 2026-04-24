@@ -10,13 +10,20 @@ public class ApplicationContext {
     public ApplicationContext() {
 
     }
-    private Map<String,Object> bens = new HashMap<>();
+    private Map<String,Object> beans = new HashMap<>();
 
     public <T> T genBean(String beanName) {
-       if(beanName.equals("testPostService")){
-           TestPostRepository testPostRepository = new TestPostRepository();
-           return (T) new TestPostService(testPostRepository);
-       }
+        if (beans.containsKey(beanName)) {
+            // t3: IoC 컨테이너가 이미 만든 빈을 보관했다가 같은 객체를 다시 돌려준다.
+            return (T) beans.get(beanName);
+        }
+
+        if(beanName.equals("testPostService")){
+            TestPostRepository testPostRepository = new TestPostRepository();
+            TestPostService testPostService = new TestPostService(testPostRepository);
+            beans.put(beanName, testPostService);
+            return (T) testPostService;
+        }
         return (T) null;
     }
 }
