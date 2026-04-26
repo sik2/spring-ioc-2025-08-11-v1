@@ -24,6 +24,14 @@ public class ApplicationContext {
             beans.put(beanName, testPostService);
             return (T) testPostService;
         }
+
+        if(beanName.equals("testPostRepository")){
+            // t4: 저장소도 컨테이너가 이름으로 찾아 만들 수 있는 빈으로 등록한다.
+            TestPostRepository testPostRepository = new TestPostRepository();
+            beans.put(beanName, testPostRepository);
+            return (T) testPostRepository;
+        }
+
         return (T) null;
     }
 }
