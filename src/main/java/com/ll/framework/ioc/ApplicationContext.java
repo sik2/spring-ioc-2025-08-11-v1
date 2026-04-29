@@ -19,7 +19,8 @@ public class ApplicationContext {
         }
 
         if(beanName.equals("testPostService")){
-            TestPostRepository testPostRepository = new TestPostRepository();
+            // t5: 서비스가 의존 객체를 직접 만들지 않고 컨테이너에서 받아 DI 되도록 한다.
+            TestPostRepository testPostRepository = genBean("testPostRepository");
             TestPostService testPostService = new TestPostService(testPostRepository);
             beans.put(beanName, testPostService);
             return (T) testPostService;
