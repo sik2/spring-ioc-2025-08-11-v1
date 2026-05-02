@@ -1,6 +1,7 @@
 package com.ll.framework.ioc;
 
 import com.ll.domain.testPost.testPost.repository.TestPostRepository;
+import com.ll.domain.testPost.testPost.service.TestFacadePostService;
 import com.ll.domain.testPost.testPost.service.TestPostService;
 
 import java.util.HashMap;
@@ -31,6 +32,18 @@ public class ApplicationContext {
             TestPostRepository testPostRepository = new TestPostRepository();
             beans.put(beanName, testPostRepository);
             return (T) testPostRepository;
+        }
+
+        if(beanName.equals("testFacadePostService")){
+            // t6: 파사드 서비스도 필요한 빈들을 컨테이너에서 받아 조립한다.
+            TestPostService testPostService = genBean("testPostService");
+            TestPostRepository testPostRepository = genBean("testPostRepository");
+            TestFacadePostService testFacadePostService = new TestFacadePostService(
+                    testPostService,
+                    testPostRepository
+            );
+            beans.put(beanName, testFacadePostService);
+            return (T) testFacadePostService;
         }
 
         return (T) null;
